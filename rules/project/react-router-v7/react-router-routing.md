@@ -144,6 +144,3 @@ ALWAYS:
 - Use `Route.ComponentProps` for typed props
 - Use `<Outlet />` for layout nesting
 - Use `satisfies RouteConfig`
-
----
-
