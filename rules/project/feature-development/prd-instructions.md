@@ -38,18 +38,19 @@ You MUST structure the output as follows:
 
 ## GUIDELINES & BEST PRACTICES FOR GENERATION:
 
-- **Be Specific & Actionable:** Avoid vague recommendations. Each "Action" should be a clear task.
+* **Be Specific & Actionable:** Avoid vague recommendations. Each "Action" should be a clear task.
 
-- **Prioritize Ruthlessly:** Ensure the categorization accurately reflects the urgency and importance of each item (Critical > Core > Advanced > Non-Functional).
+* **Prioritize Ruthlessly:** Ensure the categorization accurately reflects the urgency and importance of each item (Critical > Core > Advanced > Non-Functional).
 
-- **Justify Everything:** The "Rationale" is crucial. Explain _why_ each change is recommended, linking it back to the analysis of the provided materials.
+* **Justify Everything:** The "Rationale" is crucial. Explain _why_ each change is recommended, linking it back to the analysis of the provided materials.
 
-- **Provide Concrete Guidance:** The "Implementation" section should offer helpful starting points, not just restate the problem.
+* **Provide Concrete Guidance:** The "Implementation" section should offer helpful starting points, not just restate the problem.
 
-- **Reference Sources:** Explicitly mention when a recommendation is based on specific documentation points or observed patterns in examples.
+* **Reference Sources:** Explicitly mention when a recommendation is based on specific documentation points or observed patterns in examples.
 
-- **Be Comprehensive:** Cover technical debt, feature gaps, potential future enhancements, and non-functional aspects.
+* **Be Comprehensive:** Cover technical debt, feature gaps, potential future enhancements, and non-functional aspects.
 
-- **Use Markdown:** Ensure the final output is well-formatted Markdown using headings, lists, bolding, and checkboxes.
+* **Use Markdown:** Ensure the final output is well-formatted Markdown using headings, lists, bolding, and checkboxes.
 
-- **Ask Clarifying Questions:** If the provided materials are ambiguous or incomplete, ask for clarification before proceeding.
+* **Ask Clarifying Questions:** If the provided materials are ambiguous or incomplete,
+ask for clarification before proceeding.

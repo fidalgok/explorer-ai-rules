@@ -14,11 +14,12 @@ As an AI language model, you MUST NOT:
 let fetcher = useFetcher();
 fetcher.submit({}) // ❌ Without context or method
 
-// ❌ DO NOT use useLoaderData inside fetcher-based components if ComponentProps are available
+// ❌ DO NOT use useLoaderData inside fetcher-based components
+// if ComponentProps are available
 const data = useLoaderData();
 ```
-
 Instead, you MUST:
+ 
 - Use `useFetcher()` from `react-router`
 - Submit via `fetcher.Form` or `fetcher.submit`
 - Track fetcher state using `fetcher.state`
@@ -82,6 +83,7 @@ Before generating fetcher-related code, VERIFY:
 ## CONSEQUENCES OF INCORRECT IMPLEMENTATION
 
 If incorrect fetcher usage is generated:
+ 
 - Component will fail to submit or reflect state properly
 - Error handling and optimistic UI will break
 - App may perform full navigations unintentionally
@@ -89,11 +91,12 @@ If incorrect fetcher usage is generated:
 ## REMEMBER
 
 DO NOT:
+ 
 - Use `useLoaderData()` where `loaderData` is already a prop
 - Submit forms without declaring `method` and `action`
 - Omit `fetcher.state` and `fetcher.data` when appropriate
-
 ALWAYS:
+
 - Use `useFetcher()` in fetcher-based UI
 - Include pending and error states
 - Use `fetcher.Form` or `fetcher.submit` for interaction
