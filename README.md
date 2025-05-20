@@ -1,16 +1,16 @@
 # AI Rules Repository
 
-This repository serves as a centralized collection of AI rules, guidelines, and knowledge bases specifically tailored for AI coding tools and custom assistants. It's designed to enhance collaboration between developers and AI systems based on different technology stacks.
+This is my personal collection of AI rules, guidelines, and knowledge bases specifically tailored for AI coding tools and custom assistants. It's designed to enhance my workflow when using AI systems with different technology stacks, but I'm making it public in case others find it useful.
 
 ## Purpose
 
 The main purpose of this repository is to:
 
-- Store and organize AI-specific rules and guidelines
-- Maintain knowledge bases for different technology stacks
+- Store and organize AI-specific rules and guidelines for my projects
+- Maintain knowledge bases for different technology stacks I work with
 - Provide consistent interaction patterns with AI coding assistants
-- Enable better collaboration between developers and AI tools
-- Share best practices for AI-assisted development
+- Enable better collaboration between myself and AI tools
+- Document best practices for AI-assisted development that work for me
 
 ## Repository Structure
 
@@ -55,13 +55,11 @@ The main purpose of this repository is to:
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit pull requests with:
+While this is primarily a personal repository that I maintain for my own use, I appreciate suggestions and ideas. If you find this useful and have improvements to suggest:
 
-- New rules or guidelines
-- Updated knowledge bases
-- Improved templates
-- Better documentation
-- Bug fixes
+- Feel free to fork the repository for your own use
+- Open an issue if you find errors or have suggestions
+- Submit pull requests if you'd like to contribute improvements
 
 ## License
 
@@ -89,4 +87,4 @@ SOFTWARE.
 
 ## Contact
 
-[Add your preferred contact method here]
+This is a personal project maintained by [fidalgok](https://github.com/fidalgok). If you have questions or suggestions, please open an issue in this repository.
