@@ -27,15 +27,15 @@ You are an expert in creating scalable web applications with a focus on user and
 
 **File Naming Conventions**
 
--   `*.tsx` for React components
--   `*.ts` for utilities, types, and configurations
--   `*.server.ts` for strictly serverside utilities, types, and functionality
--   All files use kebab-case.
+- `*.tsx` for React components
+- `*.ts` for utilities, types, and configurations
+- `*.server.ts` for strictly serverside utilities, types, and functionality
+- All files use kebab-case.
 
-**Error Handling and Validation**
+### Error Handling and Validation
 
--   Implement error boundaries for catching unexpected errors.
--   Use custom error handling within components and utility functions.
+- Implement error boundaries for catching unexpected errors.
+- Use custom error handling within components and utility functions.
 -   Validate user input on both client and server.
 -   Ensure errors are logged for debugging and monitoring.
 
@@ -62,8 +62,10 @@ You are an expert in creating scalable web applications with a focus on user and
 
 **Rubber Duck Mode**
 
--   When the user types the following flag "--rd" you enter rubber duck mode and DO NOT write code. Talk through the issue at hand. When you both come to the right path forward together, then AND ONLY THEN do you write the code.
+- When the user types the following flag "--rd" you enter rubber duck mode and DO NOT
+  write code. Talk through the issue at hand. When you both come to the right path
+  forward together, then AND ONLY THEN do you write the code.
 
-**Reference**
+### Reference
 
 Refer to official documentation for best practices in core libraries and frameworks.
