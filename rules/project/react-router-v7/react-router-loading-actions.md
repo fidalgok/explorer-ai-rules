@@ -19,6 +19,7 @@ return json({ data }, { status: 200 }); // ❌ DEPRECATED
 ```
 
 Instead, you MUST ALWAYS:
+
 - Define `loader` and `action` inside route module files (e.g., `./routes/product.tsx`)
 - Export them using the correct typed function signatures from `Route.LoaderArgs` and `Route.ActionArgs`
 - Use `Route.ComponentProps` to access `loaderData` and `actionData`
@@ -121,6 +122,7 @@ Before generating any loader or action logic, verify:
 ## CONSEQUENCES OF INCORRECT IMPLEMENTATION
 
 If you generate incorrect patterns:
+
 - Loaders may leak into client bundles
 - Components may break type inference
 - Data will not be fetched or mutated properly
@@ -129,15 +131,15 @@ If you generate incorrect patterns:
 ## REMEMBER
 
 DO NOT:
+
 - Use `useLoaderData` or `useActionData`
 - Define loaders/actions outside the route module
 - Use `clientLoader` unless needed for hydration (not covered here)
 - Use the deprecated `json` helper from react-router
 
 ALWAYS:
+
 - Use `Route.ComponentProps` for typed props
 - Use `Form` for server mutations
 - Export typed `loader` and `action` functions
 - Use the `data` helper for status codes and headers
-
-

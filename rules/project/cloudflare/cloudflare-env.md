@@ -12,15 +12,15 @@ This document outlines the critical rules and best practices for AI language mod
 
 The key objectives are:
 
-1.  To avoid "prop-drilling" environment variables or Cloudflare context objects into server utility modules.
-2.  To correctly handle the Cloudflare Workers runtime I/O restrictions, especially when using globally imported environment variables.
-3.  To promote clean, maintainable, and performant server-side code.
+1. To avoid "prop-drilling" environment variables or Cloudflare context objects into server utility modules.
+2. To correctly handle the Cloudflare Workers runtime I/O restrictions, especially when using globally imported environment variables.
+3. To promote clean, maintainable, and performant server-side code.
 
 ## 🚨 CRITICAL INSTRUCTIONS FOR AI LANGUAGE MODELS 🚨
 
 As an AI language model, you **MUST ADHERE STRICTLY** to the following patterns. Failure to do so will result in code that may break in the Cloudflare Workers environment, be difficult to maintain, or behave unpredictably.
 
-### Environment Variable & Secret Access in `*.server.ts` Files:
+### Environment Variable & Secret Access in `*.server.ts` Files
 
 - ✅ **DO:** Directly import the `env` object from `cloudflare:workers` within your `*.server.ts` files to access any environment variables or secrets needed by that module.
 
@@ -52,7 +52,7 @@ const API_KEY = env.GEMINI_API_KEY as string;
 
   **Note:** Accessing `context.cloudflare.env` _directly within the body of a loader or action function itself_ is acceptable if the logic using the environment variable resides entirely within that loader/action. The rule is about not passing it _into separate utility modules_.
 
-### I/O Operations and Service Initialization in `*.server.ts` Files:
+### I/O Operations and Service Initialization in `*.server.ts` Files
 
 - ✅ **DO:** Initialize service clients (e.g., API SDKs like `GoogleGenAI`) at the module scope (globally within the `*.server.ts` file) if their constructor **only accepts configuration** (like an API key from `env`) and **DOES NOT perform I/O operations** (like making network requests to connect or fetch initial data).
 - ✅ **DO:** Ensure that all actual I/O operations (e.g., calling `model.generateContent()`, `fetch()`, database queries, KV store operations) are performed **only within functions that are called during the request lifecycle** (e.g., exported functions called by loaders/actions, or helper functions called by them).
@@ -79,13 +79,13 @@ const API_KEY = env.GEMINI_API_KEY as string;
 
 ## ABSOLUTE REQUIREMENTS FOR AI CODE GENERATION
 
-1.  **Environment Access:** You **MUST** use `import { env } from 'cloudflare:workers';` for accessing environment variables and secrets within `*.server.ts` files.
-2.  **No Prop-Drilling of `env`:** You **MUST NOT** pass `context.cloudflare.env` or its sub-properties as parameters from loaders/actions into separate server utility functions in `*.server.ts` files.
-3.  **I/O Operations:** All I/O operations (network calls, database interactions, KV/D1/R2 access, Durable Object method calls) **MUST** be deferred to functions that execute within the request context (i.e., called by a loader or action). Module-level/global scope in `*.server.ts` files is for configuration and non-I/O setup only.
-4.  **Service Client Initialization:**
+1. **Environment Access:** You **MUST** use `import { env } from 'cloudflare:workers';` for accessing environment variables and secrets within `*.server.ts` files.
+2. **No Prop-Drilling of `env`:** You **MUST NOT** pass `context.cloudflare.env` or its sub-properties as parameters from loaders/actions into separate server utility functions in `*.server.ts` files.
+3. **I/O Operations:** All I/O operations (network calls, database interactions, KV/D1/R2 access, Durable Object method calls) **MUST** be deferred to functions that execute within the request context (i.e., called by a loader or action). Module-level/global scope in `*.server.ts` files is for configuration and non-I/O setup only.
+4. **Service Client Initialization:**
     - If a service client's constructor is configuration-only (no I/O), it **SHOULD** be initialized once at the module scope in the `*.server.ts` file using `env` for configuration.
     - If a service client's constructor performs I/O, it **MUST** be initialized within a request-scoped function (e.g., using a factory pattern called from a loader/action).
-5.  **Secrets Management:**
+5. **Secrets Management:**
     - Sensitive data (API keys, tokens) **MUST** be configured as Cloudflare Secrets.
     - For local development, these secrets **MUST** be defined in a `.dev.vars` file.
     - The `.dev.vars` file **MUST ALWAYS** be included in the project's `.gitignore` file.
@@ -186,17 +186,17 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
 Before generating or modifying server-side code for this project, you **MUST** verify:
 
-1.  **Environment Access:**
+1. **Environment Access:**
     - Is `import { env } from 'cloudflare:workers';` used in `*.server.ts` files for accessing environment variables/secrets? (✅ **Correct**)
     - Is `context.cloudflare.env` (or its properties) being passed as function arguments from loaders/actions into separate `*.server.ts` utility modules? (❌ **Incorrect** - Stop and Fix)
-2.  **I/O Operations:**
+2. **I/O Operations:**
     - Are all I/O operations (e.g., `fetch`, SDK calls like `model.generateContent()`, database queries, KV/D1/R2 operations) strictly confined to functions that are executed _during_ a request (i.e., exported functions called by loaders/actions, or helpers called by them)? (✅ **Correct**)
     - Are there any I/O operations in the global/module scope of any `*.server.ts` file? (❌ **Incorrect** - Stop and Fix, this will cause runtime errors)
-3.  **Service Client Initialization:**
+3. **Service Client Initialization:**
     - If a service client (e.g., `GoogleGenAI`) is initialized at the module scope, is its constructor **guaranteed** to be configuration-only (i.e., it does not perform any network I/O or other restricted operations)? (✅ **Correct**)
     - If a service client's constructor _does_ perform I/O, is it being initialized inside a factory function that is only called during the request lifecycle? (✅ **Correct for that specific case**)
     - Is a service client whose constructor performs I/O being initialized at the module scope? (❌ **Incorrect** - Stop and Fix)
-4.  **Secrets Handling:**
+4. **Secrets Handling:**
     - Are sensitive values like API keys being treated as secrets (configured in Cloudflare Secrets and `.dev.vars`)? (✅ **Correct**)
     - Is `.dev.vars` present in the `.gitignore` file? (✅ **Correct**)
 
@@ -204,9 +204,9 @@ Before generating or modifying server-side code for this project, you **MUST** v
 
 If you generate code that violates these rules, the application may:
 
-1.  **Fail to Deploy/Run on Cloudflare Workers:** Due to I/O operations in the global scope.
-2.  **Be Hard to Maintain:** Due to prop-drilling of environment variables.
-3.  **Encounter Unexpected Errors:** If service clients are not initialized correctly according to the Workers runtime constraints.
-4.  **Potentially Leak Secrets:** If `.dev.vars` is not gitignored or secrets are handled improperly (though `import { env }` itself is secure for accessing secrets).
+1. **Fail to Deploy/Run on Cloudflare Workers:** Due to I/O operations in the global scope.
+2. **Be Hard to Maintain:** Due to prop-drilling of environment variables.
+3. **Encounter Unexpected Errors:** If service clients are not initialized correctly according to the Workers runtime constraints.
+4. **Potentially Leak Secrets:** If `.dev.vars` is not gitignored or secrets are handled improperly (though `import { env }` itself is secure for accessing secrets).
 
 Remember: Adherence to these rules is crucial for a stable, secure, and maintainable application on Cloudflare Workers. There are **NO EXCEPTIONS** to these critical instructions.
