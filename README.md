@@ -5,6 +5,7 @@ This repository serves as a centralized collection of AI rules, guidelines, and 
 ## Purpose
 
 The main purpose of this repository is to:
+
 - Store and organize AI-specific rules and guidelines
 - Maintain knowledge bases for different technology stacks
 - Provide consistent interaction patterns with AI coding assistants
@@ -13,27 +14,34 @@ The main purpose of this repository is to:
 
 ## Repository Structure
 
-```
+```bash
 .
-├── rules/                    # AI rules and guidelines
-│   ├── project/             # Project-specific rules
-│   │   └── $tech/          # Technology stack specific rules
-│   │       ├── react-router-v7/     # React Framework specific rules
-│   │       ├── supabase/      # Database specific rules
-│   │       ├── tailwind/   # Tailwind CSS specific rules
-│   │       └── ...         # Other tech stack rules
-│   └── user/               # User-specific rules and preferences
-└── examples/               # Example implementations and usage
+├── .github/                 # GitHub configuration files
+│   └── workflows/           # GitHub Actions workflows
+│       └── markdownlint.yml # Markdown linting workflow
+├── rules/                   # AI rules and guidelines
+│   ├── project-tech/             # Project-specific rules
+│   │   ├── cloudflare/      # Cloudflare specific rules
+│   │   ├── feature-development/ # Feature development guidelines
+│   │   ├── firebase/        # Firebase specific rules
+│   │   ├── llms/            # LLM-related rules
+│   │   ├── react-router-v7/ # React Router v7 specific rules
+│   │   ├── shadcn/          # shadcn UI specific rules
+│   │   └── tailwind/        # Tailwind CSS specific rules
+│   └── user/                # User-specific rules and preferences
+└── .markdownlint.yaml       # Markdown linting configuration
 ```
 
 ## Usage
 
 1. **Adding New Rules**
+
    - Create new rule files in the appropriate directory under `/rules/project/$tech`
    - Follow the established naming conventions
    - Include clear documentation and examples
 
 2. **Technology Stack Organization**
+
    - Each technology stack has its own directory under `/rules/project/$tech`
    - Examples include:
      - Framework rules (Next.js, React Router)
@@ -48,6 +56,7 @@ The main purpose of this repository is to:
 ## Contributing
 
 Contributions are welcome! Please feel free to submit pull requests with:
+
 - New rules or guidelines
 - Updated knowledge bases
 - Improved templates
@@ -80,4 +89,4 @@ SOFTWARE.
 
 ## Contact
 
-[Add your preferred contact method here] 
+[Add your preferred contact method here]
