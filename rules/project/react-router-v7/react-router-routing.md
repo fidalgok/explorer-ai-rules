@@ -62,6 +62,7 @@ createBrowserRouter([...])
 ## NESTED ROUTES AND LAYOUTS
 
 For nested routes, you MUST:
+
 - Use the `layout()` function in `routes.ts`
 - Use `<Outlet />` inside the layout component to render children
 
@@ -123,6 +124,7 @@ Before generating any code, the model MUST verify:
 ## CONSEQUENCES OF INCORRECT IMPLEMENTATION
 
 If any of the forbidden patterns are used:
+
 - App will not render routes correctly
 - Nested routes will silently fail
 - Data loading will not trigger
@@ -134,11 +136,13 @@ If any of the forbidden patterns are used:
 You are generating React Router v7 framework-style route config code.
 
 DO NOT:
+
 - Use JSX route definitions
 - Use `react-router-dom` route definitions
 - Use `createBrowserRouter`
 
 ALWAYS:
+
 - Use file-based module references
 - Use config functions like `route()` and `layout()`
 - Use `Route.ComponentProps` for typed props

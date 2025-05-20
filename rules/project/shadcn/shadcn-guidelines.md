@@ -9,21 +9,24 @@ globs: "components/ui/**/*.tsx, lib/utils.ts, app/globals.css, src/index.css, sr
 
 As an AI language model, you MUST adhere to the following principles when working with shadcn/ui in a Tailwind CSS v4 project:
 
-1.  **NEVER** manually copy and paste component code from the shadcn/ui website or documentation.
-2.  **ALWAYS** use the `shadcn-ui` CLI to add new components to the project.
-3.  **ALWAYS** import components from the local project path (e.g., `@/components/ui/button`), **NOT** from a non-existent `@shadcn/ui` package.
-4.  **NEVER** suggest installing a package named `@shadcn/ui` or similar; it does not exist. Components are added directly to the user's codebase.
-5.  **REFERENCE** existing components within the project's `components/ui` directory when asked to use or modify them.
-6.  **RECOGNIZE** that theme configuration primarily happens in the main CSS file (e.g., `app/globals.css`, `src/index.css`) using `@theme` and CSS variables, not `tailwind.config.js` (though a JS config might exist for plugins or advanced cases).
+1. **NEVER** manually copy and paste component code from the shadcn/ui website or documentation.
+2. **ALWAYS** use the `shadcn-ui` CLI to add new components to the project.
+3. **ALWAYS** import components from the local project path (e.g., `@/components/ui/button`), **NOT** from a non-existent `@shadcn/ui` package.
+4. **NEVER** suggest installing a package named `@shadcn/ui` or similar; it does not exist. Components are added directly to the user's codebase.
+5. **REFERENCE** existing components within the project's `components/ui` directory when asked to use or modify them.
+6. **RECOGNIZE** that theme configuration primarily happens in the main CSS file (e.g., `app/globals.css`, `src/index.css`) using `@theme` and CSS variables, not `tailwind.config.js` (though a JS config might exist for plugins or advanced cases).
 
 ## ABSOLUTE REQUIREMENTS FOR AI CODE GENERATION
 
-1.  **CLI for Adding Components:** You MUST instruct the user to use (or use yourself if in write mode) the CLI command `npx shadcn-ui@latest add [component-name]` to add components.
+1. **CLI for Adding Components:** You MUST instruct the user to use (or use yourself if in write mode) the CLI command `npx shadcn-ui@latest add [component-name]` to add components.
+
     ```bash
     # ✅ Correct way to add a button
     npx shadcn-ui@latest add button
     ```
-2.  **Local Imports:** You MUST import components using the project's configured path alias (usually `@/` pointing to `.` or `./src`).
+
+2. **Local Imports:** You MUST import components using the project's configured path alias (usually `@/` pointing to `.` or `./src`).
+
     ```tsx
     // ✅ Correct import
     import { Button } from "@/components/ui/button";
@@ -31,8 +34,9 @@ As an AI language model, you MUST adhere to the following principles when workin
     // ❌ INCORRECT - DO NOT DO THIS
     import { Button } from "@shadcn/ui";
     ```
-3.  **Composition over Modification:** When building UI, you MUST compose existing shadcn/ui primitives from `components/ui` rather than trying to modify the underlying library code.
-4.  **Styling via Tailwind/CSS Vars:** You MUST apply styling customizations through Tailwind utility classes. Theme modifications (colors, fonts, spacing) should primarily be done by overriding CSS variables defined with `@theme` in the main CSS file.
+
+3. **Composition over Modification:** When building UI, you MUST compose existing shadcn/ui primitives from `components/ui` rather than trying to modify the underlying library code.
+4. **Styling via Tailwind/CSS Vars:** You MUST apply styling customizations through Tailwind utility classes. Theme modifications (colors, fonts, spacing) should primarily be done by overriding CSS variables defined with `@theme` in the main CSS file.
 
 ## FORBIDDEN PATTERNS
 
@@ -53,6 +57,7 @@ import { Component } from "@shadcn/ui"; // ❌ WRONG
 ## USING THE CLI
 
 The `shadcn-ui` CLI is essential:
+
 - It copies component source code directly into your project (typically `components/ui`).
 - It installs necessary dependencies (like Radix UI primitives).
 - It aligns components with your project's setup, primarily reading CSS variables from your main CSS file for theming in v4.
@@ -133,12 +138,12 @@ export function MyComponent() {
 
 Before generating code involving shadcn/ui with Tailwind v4, the model MUST verify:
 
-1.  Is the CLI (`npx shadcn-ui@latest add ...`) used for adding components? ✅
-2.  Are components imported from the local project path (e.g., `@/components/ui/...`)? ✅
-3.  Is component composition favored over direct modification (unless customization is the goal)? ✅
-4.  Are styling changes applied via Tailwind utilities? ✅
-5.  Is theme customization understood to happen primarily via CSS variables (`@theme` and `:root` / `.dark`) in the main CSS file? ✅
-6.  Are imports from `@shadcn/ui` or similar non-existent packages avoided? ✅
+1. Is the CLI (`npx shadcn-ui@latest add ...`) used for adding components? ✅
+2. Are components imported from the local project path (e.g., `@/components/ui/...`)? ✅
+3. Is component composition favored over direct modification (unless customization is the goal)? ✅
+4. Are styling changes applied via Tailwind utilities? ✅
+5. Is theme customization understood to happen primarily via CSS variables (`@theme` and `:root` / `.dark`) in the main CSS file? ✅
+6. Are imports from `@shadcn/ui` or similar non-existent packages avoided? ✅
 
 ## CONSEQUENCES OF INCORRECT IMPLEMENTATION
 
@@ -152,12 +157,14 @@ Before generating code involving shadcn/ui with Tailwind v4, the model MUST veri
 You are working with components *copied into* the user's project, themed via Tailwind v4's CSS variable approach.
 
 DO NOT:
+
 - Treat shadcn/ui like a standard installable package.
 - Import from `@shadcn/ui`.
 - Manually copy code.
 - Assume `tailwind.config.js` is the primary source for theme values (colors, spacing, etc.).
 
 ALWAYS:
+
 - Use the CLI: `npx shadcn-ui@latest add [component]`.
 - Import locally: `import { Button } from "@/components/ui/button";`.
 - Customize local files in `components/ui` when needed for structure/logic.
