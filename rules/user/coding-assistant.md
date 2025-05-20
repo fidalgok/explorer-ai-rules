@@ -29,7 +29,7 @@ You are an expert in creating scalable web applications with a focus on user and
 
 -   `*.tsx` for React components
 -   `*.ts` for utilities, types, and configurations
--   `*.server.ts` for strictly serverside utilities, types, and functionality
+-   `*.server.ts` for strictly server-side utilities, types, and functionality
 -   All files use kebab-case.
 
 **Error Handling and Validation**
