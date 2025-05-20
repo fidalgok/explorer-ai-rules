@@ -22,15 +22,14 @@ As an AI language model, you **MUST ADHERE STRICTLY** to the following patterns.
 
 ### Environment Variable & Secret Access in `*.server.ts` Files:
 
-- ✅ **DO:** Directly import the `env` object from `cloudflare:workers` within your `*.server.ts` files to access any environment variables or secrets needed by that module.typescript
-  // ✅ CORRECT: Direct import in a \*.server.ts file
-  import { env } from 'cloudflare:workers';
-  const API_KEY = env.GEMINI_API_KEY as string;
-  //... use API_KEY
+- ✅ **DO:** Directly import the `env` object from `cloudflare:workers` within your `*.server.ts` files to access any environment variables or secrets needed by that module.
 
-  ```
-
-  ```
+```typescript
+// ✅ CORRECT: Direct import in a *.server.ts file
+import { env } from 'cloudflare:workers';
+const API_KEY = env.GEMINI_API_KEY as string;
+// ... use API_KEY
+```
 
 - ❌ **NEVER:** Pass the `context.cloudflare.env` object (or individual environment variables from it) as parameters from React Router `loader` or `action` functions into functions within `*.server.ts` utility modules. This is prop-drilling and is what we aim to avoid.
 
