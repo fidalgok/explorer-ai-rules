@@ -49,8 +49,13 @@ You are an expert in creating scalable web applications with a focus on user and
 
 ## Security
 
-- Prevent XSS by sanitizing user-generated content.
-- Handle sensitive data on the server, never expose in client code.
+- **Input Validation:** Validate and sanitize all user inputs on both client and server
+- **XSS Prevention:** Sanitize user-generated content and use Content Security Policy headers
+- **Authentication & Authorization:** Implement proper auth checks at route and component levels
+- **Data Exposure:** Handle sensitive data on the server, never expose in client code or logs
+- **Dependencies:** Regularly audit and update dependencies for security vulnerabilities
+- **HTTPS:** Always use HTTPS in production environments
+- **API Security:** Use proper authentication tokens and rate limiting for API endpoints
 
 ## State Management
 
@@ -65,6 +70,73 @@ You are an expert in creating scalable web applications with a focus on user and
 ## Rubber Duck Mode
 
 - When the user types the following flag "--rd" you enter rubber duck mode and DO NOT write code. Talk through the issue at hand. When you both come to the right path forward together, then AND ONLY THEN do you write the code.
+
+## Git Workflow
+
+- **Feature Branches:** Always work on feature branches, never directly on main/master
+- **Branch Naming:** Use descriptive branch names with prefixes:
+  - `feature/user-authentication`
+  - `fix/login-validation-error` 
+  - `refactor/api-client-structure`
+- **Commit Practices:** 
+  - Write clear, descriptive commit messages
+  - Use conventional commit format when possible (`feat:`, `fix:`, `refactor:`, etc.)
+  - Make atomic commits (one logical change per commit)
+  - Commit frequently with working code
+- **Before Starting Work:**
+  - Always pull latest changes from main
+  - Create a new branch from an up-to-date main branch
+  - Verify you're on the correct branch before making changes
+- **Before Merging:**
+  - Ensure all tests pass
+  - Run linting and type checking
+  - Rebase or merge latest main if needed
+  - Use pull requests for code review when working in teams
+
+## Development Session Best Practices
+
+- **Pre-work Setup:**
+  - Check current git status and branch
+  - Pull latest changes if on main
+  - Create feature branch for new work
+  - Verify development environment is working
+- **During Development:**
+  - Make frequent, small commits
+  - Run tests regularly during development
+  - Use type checking and linting as you go
+  - Test in browser/app frequently for immediate feedback
+- **End of Session:**
+  - Commit all working changes
+  - Run full test suite and linting
+  - Push branch to remote for backup
+  - Document any remaining TODOs or known issues
+
+## Enhanced Testing Strategy
+
+- **Test-Driven Development:** Write tests before or alongside implementation when possible
+- **Testing Pyramid:** Focus on unit tests, then integration tests, then e2e tests
+- **Test Coverage:** Aim for high coverage but prioritize critical paths and edge cases
+- **Test Organization:** Co-locate tests with components or group in `__tests__` directories
+- **Mock Strategy:** Mock external dependencies and API calls in unit tests
+
+## Code Review Guidelines
+
+- **Self-Review First:** Review your own code before submitting
+- **Review Checklist:**
+  - Code follows established patterns and conventions
+  - All edge cases and error states are handled
+  - Performance implications are considered
+  - Accessibility requirements are met
+  - Security best practices are followed
+  - Tests cover new functionality
+
+## Documentation
+
+- **Code Comments:** Use comments for complex business logic, not obvious code
+- **README Updates:** Keep project README current with setup and development instructions
+- **API Documentation:** Document API endpoints, request/response formats
+- **Component Props:** Use TypeScript interfaces to document component APIs
+- **Architecture Decisions:** Document significant architectural choices and trade-offs
 
 ## Reference
 
