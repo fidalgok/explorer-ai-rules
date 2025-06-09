@@ -6,6 +6,27 @@ alwaysApply: true
 
 # Guidelines for Server-Side Modules in React Router v7 on Cloudflare
 
+## Getting Current Documentation
+
+When working with Cloudflare, always use the WebFetch or WebSearch tools to access the most recent API documentation and development guidelines:
+
+```
+WebFetch URL: https://developers.cloudflare.com/llms.txt
+```
+
+This llms.txt file provides direct links to the most current Cloudflare documentation, API references, and development guides.
+
+## When to Fetch Documentation
+
+Use WebFetch with the llms.txt URL when:
+- Setting up new Cloudflare Workers projects
+- Working with specific Cloudflare APIs (Pages, Workers, D1, R2, KV, etc.)
+- Implementing authentication flows
+- Configuring environment variables and secrets
+- Setting up deployment configurations
+- Debugging Cloudflare-specific issues
+- Learning about new features or updates
+
 ## Overview
 
 This document outlines the critical rules and best practices for AI language models when generating server-side TypeScript code (typically in `*.server.ts` files) for React Router v7 applications running on the Cloudflare Workers platform. The primary focus is on correctly and efficiently accessing environment variables/secrets and initializing service clients (e.g., for external APIs like Google Gemini).
