@@ -20,38 +20,80 @@ The main purpose of this repository is to:
 │   └── workflows/           # GitHub Actions workflows
 │       └── markdownlint.yml # Markdown linting workflow
 ├── rules/                   # AI rules and guidelines
-│   ├── project-tech/             # Project-specific rules
-│   │   ├── cloudflare/      # Cloudflare specific rules
+│   ├── project-tech/        # Technology-specific rules
+│   │   ├── cloudflare/      # Cloudflare Workers, Pages, D1, KV, R2
+│   │   ├── convex/          # Convex backend platform
 │   │   ├── feature-development/ # Feature development guidelines
-│   │   ├── firebase/        # Firebase specific rules
+│   │   ├── firebase/        # Firebase services
 │   │   ├── llms/            # LLM-related rules
+│   │   ├── netlify/         # Netlify deployment and functions
 │   │   ├── react-router-v7/ # React Router v7 specific rules
-│   │   ├── shadcn/          # shadcn UI specific rules
-│   │   └── tailwind/        # Tailwind CSS specific rules
+│   │   ├── shadcn/          # shadcn UI component library
+│   │   └── tailwind/        # Tailwind CSS framework
 │   └── user/                # User-specific rules and preferences
+│       ├── coding-assistant.md      # Core programming principles
+│       └── security-best-practices.md # Security guidelines for AI assistants
+├── CLAUDE.md                # Instructions for Claude Code
 └── .markdownlint.yaml       # Markdown linting configuration
 ```
 
 ## Usage
 
-1. **Adding New Rules**
+### Option 1: Git Submodule Integration (Recommended)
 
-   - Create new rule files in the appropriate directory under `/rules/project/$tech`
-   - Follow the established naming conventions
+To integrate these AI rules into your existing projects:
+
+1. **Add as Submodule**
+   ```bash
+   # In your project root directory
+   git submodule add https://github.com/fidalgok/ai-rules.git .ai-rules
+   git commit -m "Add AI rules submodule"
+   ```
+
+2. **Reference in Your Project's CLAUDE.md**
+   ```markdown
+   # AI Rules Integration
+   This project includes comprehensive AI coding guidelines from [.ai-rules/](./.ai-rules/)
+   
+   For technology-specific rules, see:
+   - [Cloudflare Guidelines](./.ai-rules/rules/project-tech/cloudflare/)
+   - [React Router Guidelines](./.ai-rules/rules/project-tech/react-router-v7/)
+   - [Security Best Practices](./.ai-rules/rules/user/security-best-practices.md)
+   ```
+
+3. **Update Rules in Any Project**
+   ```bash
+   # Pull latest AI rules updates
+   git submodule update --remote .ai-rules
+   git add .ai-rules
+   git commit -m "Update AI rules to latest version"
+   ```
+
+4. **Clone Projects with Submodules**
+   ```bash
+   # When cloning projects that use this submodule
+   git clone --recurse-submodules <your-project-repo>
+   
+   # Or if already cloned
+   git submodule init
+   git submodule update
+   ```
+
+### Managing This Repository
+
+1. **Adding New Rules**
+   - Create new rule files in the appropriate directory under `/rules/project-tech/`
+   - Follow kebab-case naming conventions
    - Include clear documentation and examples
 
 2. **Technology Stack Organization**
-
-   - Each technology stack has its own directory under `/rules/project/$tech`
-   - Examples include:
-     - Framework rules (Next.js, React Router)
-     - Styling rules (Tailwind CSS, shadcn)
-     - Backend/Database rules (Firebase, Supabase, Turso with Drizzle)
-   - Keep rules specific to each technology stack in their respective directories
+   - Each technology has its own directory under `/rules/project-tech/`
+   - Include llms.txt references for up-to-date documentation
+   - Keep rules specific to each technology stack
 
 3. **User Rules**
-   - Store personal preferences and custom rules under `/rules/user`
-   - These can include coding style preferences, naming conventions, etc.
+   - Store personal preferences under `/rules/user/`
+   - Include coding style preferences, security guidelines, etc.
 
 ## Contributing
 
