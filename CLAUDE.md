@@ -19,14 +19,6 @@ The repository is organized into two main areas:
 - Technology rules are namespaced under their respective directories
 - The `coding-assistant.md` file contains core programming principles and conventions
 
-## Commands
-
-### Linting
-```bash
-npx markdownlint-cli README.md "rules/**/*.md"
-```
-
-This command runs markdown linting across all documentation files and is used in the GitHub Actions workflow.
 
 ## Coding Preferences (from rules/user/coding-assistant.md)
 

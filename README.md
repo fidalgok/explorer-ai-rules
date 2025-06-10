@@ -16,9 +16,6 @@ The main purpose of this repository is to:
 
 ```bash
 .
-├── .github/                 # GitHub configuration files
-│   └── workflows/           # GitHub Actions workflows
-│       └── markdownlint.yml # Markdown linting workflow
 ├── rules/                   # AI rules and guidelines
 │   ├── project-tech/        # Technology-specific rules
 │   │   ├── cloudflare/      # Cloudflare Workers, Pages, D1, KV, R2
@@ -33,8 +30,7 @@ The main purpose of this repository is to:
 │   └── user/                # User-specific rules and preferences
 │       ├── coding-assistant.md      # Core programming principles
 │       └── security-best-practices.md # Security guidelines for AI assistants
-├── CLAUDE.md                # Instructions for Claude Code
-└── .markdownlint.yaml       # Markdown linting configuration
+└── CLAUDE.md                # Instructions for Claude Code
 ```
 
 ## Usage
@@ -78,6 +74,32 @@ To integrate these AI rules into your existing projects:
    git submodule init
    git submodule update
    ```
+
+5. **Contributing Changes Back from Submodule**
+   
+   When working in a project and you need to update AI rules based on your work:
+   
+   ```bash
+   # Navigate to the submodule directory
+   cd .ai-rules
+   
+   # Make your changes to the AI rules files
+   # Edit rules/project-tech/your-framework/your-file.md
+   
+   # Commit changes in the submodule
+   git add .
+   git commit -m "Update AI rules based on project work"
+   
+   # Push to the AI rules repository
+   git push origin main
+   
+   # Go back to parent project and update submodule reference
+   cd ..
+   git add .ai-rules
+   git commit -m "Update AI rules submodule reference"
+   ```
+   
+   This workflow allows you to evolve AI rules based on real project experience while keeping them centralized for use across all your projects.
 
 ### Managing This Repository
 
