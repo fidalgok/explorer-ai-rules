@@ -1,9 +1,10 @@
 ---
 description: "Google Gemini API quickstart guide with current models and JavaScript implementation"
 globs: ["**/*.js", "**/*.ts", "**/*.tsx"]
-last_updated: "2025-06-10"
+last_updated: "2025-06-13"
 reference_url: "https://ai.google.dev/gemini-api/docs/quickstart"
 current_package: "@google/genai"
+current_version: "^1.5.0"
 ---
 
 # Google Gemini API Guidelines
@@ -59,28 +60,61 @@ const ai = new GoogleGenAI({
 ### ✅ Recommended Models
 
 ```typescript
-// Premium - Most powerful reasoning
+// Premium - Most powerful reasoning (specific preview build)
 const GEMINI_2_5_PRO = "gemini-2.5-pro-preview";
 
-// Best price-performance balance
+// Best price-performance balance (use specific build for production)
 const GEMINI_2_5_FLASH = "gemini-2.5-flash-preview";
+const GEMINI_2_5_FLASH_SPECIFIC = "gemini-2.5-flash-preview-05-20"; // Tested build
 
 // Stable production model
 const GEMINI_2_0_FLASH = "gemini-2.0-flash";
 
 // Choose based on use case
-const getModel = (useCase: "complex" | "balanced" | "production") => {
+const getModel = (
+  useCase: "complex" | "balanced" | "production" | "conversational"
+) => {
   switch (useCase) {
     case "complex":
       return GEMINI_2_5_PRO;
     case "balanced":
       return GEMINI_2_5_FLASH;
+    case "conversational":
+      return GEMINI_2_5_FLASH_SPECIFIC; // Specific build for chat apps
     case "production":
       return GEMINI_2_0_FLASH;
     default:
       return GEMINI_2_5_FLASH;
   }
 };
+```
+
+### 🚨 Critical Model Configuration Notes
+
+**Gemini 2.5 "Thinking" Feature**: Preview models use internal reasoning tokens that can consume your entire token budget before generating output.
+
+**For Conversational AI** (recommended):
+
+```typescript
+config: {
+  maxOutputTokens: 300,
+  temperature: 0.8,
+  thinkingConfig: {
+    thinkingBudget: 0, // Disable thinking for chat apps
+  },
+}
+```
+
+**For Complex Reasoning Tasks** (when you need thinking):
+
+```typescript
+config: {
+  maxOutputTokens: 500,
+  temperature: 0.3,
+  thinkingConfig: {
+    thinkingBudget: 100, // Allow 100 tokens for internal reasoning
+  },
+}
 ```
 
 ## Key Patterns and Best Practices
@@ -91,8 +125,21 @@ const getModel = (useCase: "complex" | "balanced" | "production") => {
 async function generateText(prompt: string) {
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash-preview",
-      contents: prompt,
+      model: "gemini-2.5-flash-preview-05-20",
+      config: {
+        // Use 'config' not 'generationConfig'
+        maxOutputTokens: 300,
+        temperature: 0.8,
+        thinkingConfig: {
+          thinkingBudget: 0, // Disable for conversational AI
+        },
+      },
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: prompt }],
+        },
+      ],
     });
 
     return response.text;
@@ -104,6 +151,40 @@ async function generateText(prompt: string) {
 
 // Usage
 const result = await generateText("Explain React hooks in simple terms");
+```
+
+### ✅ Optimized for Token Efficiency
+
+```typescript
+async function generateConversationalResponse(
+  prompt: string,
+  characterPrompt: string
+) {
+  const optimizedPrompt = `${characterPrompt}
+
+${prompt}
+
+IMPORTANT: Keep your response under 200 tokens. Be concise but authentic to your character.`;
+
+  const response = await ai.models.generateContent({
+    model: "gemini-2.5-flash-preview-05-20",
+    config: {
+      maxOutputTokens: 300,
+      temperature: 0.8,
+      thinkingConfig: {
+        thinkingBudget: 0, // Critical for chat apps
+      },
+    },
+    contents: [
+      {
+        role: "user",
+        parts: [{ text: optimizedPrompt }],
+      },
+    ],
+  });
+
+  return response.text || "I'm having trouble responding right now.";
+}
 ```
 
 ### ✅ Structured Output with Schema
@@ -119,8 +200,8 @@ interface Recipe {
 async function extractRecipe(text: string): Promise<Recipe> {
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash-preview",
-    contents: `Extract recipe information from this text and return as JSON: ${text}`,
-    generationConfig: {
+    config: {
+      // Use 'config' not 'generationConfig'
       responseMimeType: "application/json",
       responseSchema: {
         type: "object",
@@ -138,7 +219,20 @@ async function extractRecipe(text: string): Promise<Recipe> {
         },
         required: ["name", "difficulty", "cookingTime", "ingredients"],
       },
+      thinkingConfig: {
+        thinkingBudget: 0, // Disable for structured output
+      },
     },
+    contents: [
+      {
+        role: "user",
+        parts: [
+          {
+            text: `Extract recipe information from this text and return as JSON: ${text}`,
+          },
+        ],
+      },
+    ],
   });
 
   return JSON.parse(response.text) as Recipe;
@@ -172,7 +266,12 @@ const weatherFunction = {
 async function chatWithTools(message: string) {
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash-preview",
-    contents: message,
+    contents: [
+      {
+        role: "user",
+        parts: [{ text: message }],
+      },
+    ],
     tools: [{ functionDeclarations: [weatherFunction] }],
   });
 
@@ -191,12 +290,31 @@ async function chatWithTools(message: string) {
       const followUpResponse = await ai.models.generateContent({
         model: "gemini-2.5-flash-preview",
         contents: [
-          { text: message },
           {
-            functionResponse: {
-              name: functionCall.name,
-              response: weatherData,
-            },
+            role: "user",
+            parts: [{ text: message }],
+          },
+          {
+            role: "model",
+            parts: [
+              {
+                functionCall: {
+                  name: functionCall.name,
+                  args: functionCall.args,
+                },
+              },
+            ],
+          },
+          {
+            role: "user",
+            parts: [
+              {
+                functionResponse: {
+                  name: functionCall.name,
+                  response: weatherData,
+                },
+              },
+            ],
           },
         ],
         tools: [{ functionDeclarations: [weatherFunction] }],
@@ -264,7 +382,20 @@ export function useGemini() {
       try {
         const response = await ai.models.generateContent({
           model,
-          contents: prompt,
+          config: {
+            // Use 'config' not 'generationConfig'
+            maxOutputTokens: 300,
+            temperature: 0.8,
+            thinkingConfig: {
+              thinkingBudget: 0, // Disable for conversational AI
+            },
+          },
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: prompt }],
+            },
+          ],
         });
 
         return response.text;
@@ -314,14 +445,31 @@ const model = "gemini-2.0-flash";
 // Wrong: No error handling
 const response = await ai.models.generateContent({
   model: "gemini-2.5-flash-preview",
-  contents: prompt,
+  contents: [
+    {
+      role: "user",
+      parts: [{ text: prompt }],
+    },
+  ],
 });
 
 // Correct: Proper error handling
 try {
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash-preview",
-    contents: prompt,
+    config: {
+      maxOutputTokens: 300,
+      temperature: 0.8,
+      thinkingConfig: {
+        thinkingBudget: 0,
+      },
+    },
+    contents: [
+      {
+        role: "user",
+        parts: [{ text: prompt }],
+      },
+    ],
   });
   return response.text;
 } catch (error) {
@@ -361,7 +509,19 @@ export async function POST(request: NextRequest) {
 
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash-preview",
-      contents: message,
+      config: {
+        maxOutputTokens: 300,
+        temperature: 0.8,
+        thinkingConfig: {
+          thinkingBudget: 0, // Critical for chat apps
+        },
+      },
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: message }],
+        },
+      ],
     });
 
     return NextResponse.json({ text: response.text });
@@ -387,17 +547,32 @@ export const generateWithGemini = action({
     prompt: v.string(),
     model: v.optional(v.string()),
   },
-  handler: async (ctx, { prompt, model = "gemini-2.5-flash-preview" }) => {
+  handler: async (
+    ctx,
+    { prompt, model = "gemini-2.5-flash-preview-05-20" }
+  ) => {
     const ai = new GoogleGenAI({
       apiKey: process.env.GOOGLE_AI_API_KEY!,
     });
 
     const response = await ai.models.generateContent({
       model,
-      contents: prompt,
+      config: {
+        maxOutputTokens: 300,
+        temperature: 0.8,
+        thinkingConfig: {
+          thinkingBudget: 0, // Disable for conversational AI
+        },
+      },
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: prompt }],
+        },
+      ],
     });
 
-    return { text: response.text };
+    return { text: response.text || "Fallback message" };
   },
 });
 ```
