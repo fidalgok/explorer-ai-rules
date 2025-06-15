@@ -47,6 +47,26 @@ You are an expert in creating scalable web applications with a focus on user and
 - Optimize nested components to minimize re-rendering.
 - Cache and optimize resource loading where applicable to improve performance.
 
+## Real-Time Applications
+
+- **WebSocket Architecture with Convex:**
+  - Design for instant multi-client updates using Convex's reactive queries
+  - Implement real-time approval workflows and collaborative features
+  - Use automatic query invalidation for zero-refresh user experiences
+  - Test real-time functionality across multiple browser sessions
+
+- **Real-Time UX Patterns:**
+  - Provide immediate feedback for user actions (optimistic updates)
+  - Implement proper loading states for async operations
+  - Design status-based interfaces that react to real-time state changes
+  - Use WebSocket subscriptions for live data that affects multiple users
+
+- **Collaborative Features:**
+  - Admin approvals should instantly update user access across sessions
+  - Implement real-time notification systems for important events
+  - Design conflict resolution for simultaneous edits
+  - Maintain audit trails for real-time collaborative actions
+
 ## Security
 
 - **Input Validation:** Validate and sanitize all user inputs on both client and server
@@ -56,11 +76,53 @@ You are an expert in creating scalable web applications with a focus on user and
 - **Dependencies:** Regularly audit and update dependencies for security vulnerabilities
 - **HTTPS:** Always use HTTPS in production environments
 - **API Security:** Use proper authentication tokens and rate limiting for API endpoints
+- **Role-Based Access Control:**
+  - Implement server-side authorization checks on every admin operation
+  - Use client-side role checks only for UX (can be bypassed)
+  - Create clear separation between authentication and authorization
+  - Design user lifecycle states: pending → approved → suspended
+- **OAuth Integration Best Practices:**
+  - Use Google OAuth for verified email addresses in institutional settings
+  - Implement proper callback URL configuration and error handling
+  - Add environment variable validation for OAuth credentials
+  - Design graceful fallbacks for OAuth failures with actionable user feedback
+
+## AI Integration
+
+- **Google Gemini API Patterns:**
+  - Use `@google/genai` package for current API compatibility
+  - Set `thinkingBudget: 0` in config for conversational AI to prevent token waste
+  - Structure requests with `{ model, config: { maxOutputTokens, temperature, thinkingConfig }, contents }`
+  - Implement proper error handling with fallback responses
+  - Add explicit token limit guidance in system prompts for efficiency
+
+- **Model Selection Guidelines:**
+  - `gemini-2.5-flash-preview` for conversational AI and real-time responses
+  - `gemini-2.5-pro-preview` for complex reasoning tasks requiring thinking budget
+  - Monitor token utilization patterns during development
+  - Test with realistic conversation loads before production
+
+- **Token Management Best Practices:**
+  - Include token limits in prompts (e.g., "Keep response under 200 tokens")
+  - Monitor `finishReason` for `MAX_TOKENS` to detect thinking budget issues
+  - Use thinking budget (10-50% of total tokens) only for complex analysis tasks
+  - Implement retry logic for incomplete responses
 
 ## State Management
 
-- Utilize URL-based state management for React Router v7 where applicable.
-- Use hooks for local component state.
+- **URL-Based State Management:** Utilize React Router v7's `useSearchParams` for component state
+  - Use `setSearchParams({ tab }, { replace: true })` for navigation without history pollution
+  - Initialize with defaults: `const activeTab = searchParams.get("tab") || "users"`
+  - Preserve user context across page refreshes
+  - Avoid manual URLSearchParams manipulation, use React Router hooks
+
+- **Convex Real-Time State:**
+  - Leverage Convex's reactive queries for automatic UI updates
+  - Use `useQuery` for data fetching with automatic WebSocket subscriptions
+  - Implement `useMutation` for server-side state changes
+  - Design real-time collaborative features with multi-client state sync
+
+- **Local Component State:** Use hooks for ephemeral UI state not suitable for URL persistence
 
 ## Key Conventions
 
@@ -137,6 +199,49 @@ You are an expert in creating scalable web applications with a focus on user and
 - **API Documentation:** Document API endpoints, request/response formats
 - **Component Props:** Use TypeScript interfaces to document component APIs
 - **Architecture Decisions:** Document significant architectural choices and trade-offs
+- **Technical Decision Documentation:**
+  - Create comprehensive design decision documents explaining architectural choices
+  - Document migration strategies with backward compatibility approaches
+  - Capture API integration lessons learned with specific error patterns
+  - Maintain development session logs for complex multi-step implementations
+- **Production Deployment Documentation:**
+  - Document environment configuration for multi-deployment scenarios
+  - Create troubleshooting guides for OAuth and API integration issues
+  - Maintain security configuration checklists for admin features
+
+## Technology Stack Integration
+
+- **Convex Development Patterns:**
+  - Separate auth routes (`convex/http.ts`) from user routes (`convex/router.ts`)
+  - Use Convex Auth with Google OAuth for institutional deployments
+  - Implement proper TypeScript integration with `Id<"tableName">` and `Doc<"tableName">` types
+  - Design schema with auth tables + application tables pattern
+  - Create server-side authorization helpers for admin functions
+
+- **React Router v7 Integration:**
+  - Leverage file-based routing with proper data loading patterns
+  - Use `useSearchParams` for URL-based state management
+  - Implement route protection with role-based access control
+  - Design nested layouts for different user types (admin, student, public)
+  - Follow React Router conventions for loaders and actions
+
+- **Tailwind CSS v4 Configuration:**
+  - Use CSS-first approach with `@theme` directive for design tokens
+  - Implement custom color palettes and spacing scales
+  - Create reusable component classes for common UI patterns
+  - Configure dark mode support with CSS variables
+
+- **TypeScript Safety with External APIs:**
+  - Use proper type validation for Convex mutations and queries
+  - Implement runtime type checking for API responses
+  - Create type-safe patterns for user roles and permissions
+  - Use discriminated unions for complex state management
+
+- **Environment Variable Management:**
+  - Structure environment variables for multi-deployment scenarios
+  - Implement proper validation for required configuration
+  - Use environment-specific Convex deployments
+  - Document OAuth callback URL configuration for different environments
 
 ## Reference
 
