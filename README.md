@@ -40,24 +40,29 @@ The main purpose of this repository is to:
 To integrate these AI rules into your existing projects:
 
 1. **Add as Submodule**
+
    ```bash
    # In your project root directory
-   git submodule add https://github.com/fidalgok/ai-rules.git .ai-rules
+   git submodule add https://github.com/fidalgok/explorer-ai-rules.git .ai-rules
    git commit -m "Add AI rules submodule"
    ```
 
 2. **Reference in Your Project's CLAUDE.md**
+
    ```markdown
    # AI Rules Integration
+
    This project includes comprehensive AI coding guidelines from [.ai-rules/](./.ai-rules/)
-   
+
    For technology-specific rules, see:
+
    - [Cloudflare Guidelines](./.ai-rules/rules/project-tech/cloudflare/)
    - [React Router Guidelines](./.ai-rules/rules/project-tech/react-router-v7/)
    - [Security Best Practices](./.ai-rules/rules/user/security-best-practices.md)
    ```
 
 3. **Update Rules in Any Project**
+
    ```bash
    # Pull latest AI rules updates
    git submodule update --remote .ai-rules
@@ -66,49 +71,52 @@ To integrate these AI rules into your existing projects:
    ```
 
 4. **Clone Projects with Submodules**
+
    ```bash
    # When cloning projects that use this submodule
    git clone --recurse-submodules <your-project-repo>
-   
+
    # Or if already cloned
    git submodule init
    git submodule update
    ```
 
 5. **Contributing Changes Back from Submodule**
-   
+
    When working in a project and you need to update AI rules based on your work:
-   
+
    ```bash
    # Navigate to the submodule directory
    cd .ai-rules
-   
+
    # Make your changes to the AI rules files
    # Edit rules/project-tech/your-framework/your-file.md
-   
+
    # Commit changes in the submodule
    git add .
    git commit -m "Update AI rules based on project work"
-   
+
    # Push to the AI rules repository
    git push origin main
-   
+
    # Go back to parent project and update submodule reference
    cd ..
    git add .ai-rules
    git commit -m "Update AI rules submodule reference"
    ```
-   
+
    This workflow allows you to evolve AI rules based on real project experience while keeping them centralized for use across all your projects.
 
 ### Managing This Repository
 
 1. **Adding New Rules**
+
    - Create new rule files in the appropriate directory under `/rules/project-tech/`
    - Follow kebab-case naming conventions
    - Include clear documentation and examples
 
 2. **Technology Stack Organization**
+
    - Each technology has its own directory under `/rules/project-tech/`
    - Include llms.txt references for up-to-date documentation
    - Keep rules specific to each technology stack
